@@ -10,6 +10,7 @@ Make sure to make the script executable before running.
 '''
 import sys
 import os
+import re
 from P4 import P4, P4Exception
 
 p4 = P4()
@@ -26,12 +27,12 @@ def main():
         
         # Check command-line argument for provided depot path. Set a default P4 depot path to search if one is not provided in the command.
         if len(sys.argv) == 1:
-            depot_path = '//depot/...'    
+            depot_path = '//depot/...'
+        elif m := re.search(r'\d+$', sys.argv[1]):
+            if m:
+                depot_path = sys.argv[1]
         else:
             depot_path = sys.argv[1]
-            
-        if not depot_path.endswith('/...'):
-            depot_path = depot_path.rstrip( '/') + '/...'
             
         print(f"Looking for librarian errors here:\n{depot_path}")
                 
